@@ -101,7 +101,7 @@ Route::post('/lecturer/change-password', [LecturerAuthController::class, 'change
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/student/dashboard', [StudentAuthController::class, 'dashboard'])->name('student.dashboard');
     // Add other student routes here later (topic, appointment, profile)
-    
+
     // Topic Routes
     Route::get('/student/topics', [TopicController::class, 'index'])->name('student.topic.index');
     Route::post('/student/topics', [TopicController::class, 'store'])->name('student.topic.store');
@@ -117,21 +117,23 @@ Route::middleware(['auth:student'])->group(function () {
     // Profile Routes
     Route::get('/student/profile', [ProfileController::class, 'index'])->name('student.profile.index');
     Route::put('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+
+    Route::get('/student/drafts', [DraftController::class, 'index'])->name('students.drafts.index');
 });
 
 // Lecturer Routes
 Route::middleware(['auth:lecturer'])->group(function () {
     Route::get('/lecturer/dashboard', [DashboardController::class, 'index'])->name('lecturer.dashboard');
-    
+
     // Topic Routes
     Route::get('/lecturer/topics', [LecturerTopicController::class, 'index'])->name('lecturer.topic.index');
     Route::get('/lecturer/topics/{topic}', [LecturerTopicController::class, 'show'])->name('lecturer.topic.show');
     Route::put('/lecturer/topics/{topic}', [LecturerTopicController::class, 'update'])->name('lecturer.topic.update');
-    
+
     // Appointment Routes
     Route::get('/lecturer/appointments', [LecturerAppointmentController::class, 'index'])->name('lecturer.appointment.index');
     Route::put('/lecturer/appointments/{appointment}', [LecturerAppointmentController::class, 'update'])->name('lecturer.appointment.update');
-    
+
     // Profile Routes
     Route::get('/lecturer/profile', [LecturerProfileController::class, 'index'])->name('lecturer.profile.index');
     Route::put('/lecturer/profile', [LecturerProfileController::class, 'update'])->name('lecturer.profile.update');
