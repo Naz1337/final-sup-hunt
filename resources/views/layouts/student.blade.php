@@ -29,8 +29,8 @@
                        class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
                         Dashboard
                     </a>
-                    <a href="{{ route('student.dashboard') }}"
-                       class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('students.drafts.index') }}"
+                       class="nav-link {{ request()->routeIs('students.drafts.index') ? 'active' : '' }}">
                         Drafts
                     </a>
                     <a href="{{ route('student.topic.index') }}"

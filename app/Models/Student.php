@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Student extends Authenticatable
@@ -22,4 +23,9 @@ class Student extends Authenticatable
     protected $casts = [
         'is_first_login' => 'boolean',
     ];
-} 
+
+    public function drafts(): HasMany
+    {
+        return $this->hasMany(Draft::class);
+    }
+}
