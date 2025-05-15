@@ -9,7 +9,7 @@
     </div>
 
     @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('success') }}
     </div>
     @endif
@@ -90,7 +90,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Status</label>
                         <select name="status" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200">
                             <option value="approved">Approve</option>
                             <option value="rejected">Reject</option>
                         </select>
@@ -98,7 +98,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Feedback</label>
                         <textarea name="feedback" rows="4" required
-                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200"
+                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200"
                                   placeholder="Provide feedback to the student..."></textarea>
                     </div>
                 </div>

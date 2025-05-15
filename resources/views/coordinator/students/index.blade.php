@@ -23,7 +23,7 @@
     </div>
 
     @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('success') }}
     </div>
     @endif
@@ -36,14 +36,14 @@
 
                 <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
                     <div class="flex">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <i class="fas fa-info-circle text-blue-400"></i>
                         </div>
                         <div class="ml-3">
                             <h3 class="text-sm font-medium text-blue-800">CSV File Format</h3>
                             <div class="mt-2 text-sm text-blue-700">
                                 <p class="mb-2">Your CSV file should contain the following columns:</p>
-                                <div class="bg-white p-3 rounded border border-blue-200 font-mono text-sm">
+                                <div class="bg-white p-3 rounded-sm border border-blue-200 font-mono text-sm">
                                     Matric ID, Name, Email
                                 </div>
                             </div>
@@ -55,19 +55,19 @@
                     <h4 class="font-medium text-gray-700 mb-2">Program Detection</h4>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="program-item">
-                            <span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded">CB</span>
+                            <span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-1 rounded-sm">CB</span>
                             <span class="text-sm text-gray-600">Software Engineering</span>
                         </div>
                         <div class="program-item">
-                            <span class="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded">CA</span>
+                            <span class="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded-sm">CA</span>
                             <span class="text-sm text-gray-600">Computer System & Networking</span>
                         </div>
                         <div class="program-item">
-                            <span class="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-1 rounded">CD</span>
+                            <span class="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-1 rounded-sm">CD</span>
                             <span class="text-sm text-gray-600">Computer Graphics & Multimedia</span>
                         </div>
                         <div class="program-item">
-                            <span class="text-xs font-semibold bg-orange-100 text-orange-800 px-2 py-1 rounded">CF</span>
+                            <span class="text-xs font-semibold bg-orange-100 text-orange-800 px-2 py-1 rounded-sm">CF</span>
                             <span class="text-sm text-gray-600">Cybersecurity</span>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                     @csrf
                     <div class="mb-4">
                         <input type="file" name="csv_file" accept=".csv" required
-                               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                               class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                         @error('csv_file')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -138,14 +138,14 @@
                 <div>
                     <label for="edit_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input type="text" id="edit_name" name="name"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Email -->
                 <div>
                     <label for="edit_email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <input type="email" id="edit_email" name="email"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Program (Read-only) -->
@@ -173,7 +173,7 @@
     </div>
 
     <!-- Students Table -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
         <table class="min-w-full">
             <thead class="bg-gray-50">
                 <tr>

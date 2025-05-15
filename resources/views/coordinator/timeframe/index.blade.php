@@ -14,13 +14,13 @@
     </div>
 
     @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('success') }}
     </div>
     @endif
 
     @if(session('error'))
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('error') }}
     </div>
     @endif
@@ -82,7 +82,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-sm bg-gray-200">
                         <div style="width: {{ $task->progress_percentage }}%; background-color: {{ $task->color }}" 
                              class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500">
                         </div>
@@ -107,32 +107,32 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Task Name</label>
                     <input type="text" name="name" required
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                     <textarea name="description" rows="3"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                         <input type="datetime-local" name="start_date" required
-                               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                               class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                         <input type="datetime-local" name="end_date" required
-                               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                               class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
                     <select name="color" required
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                         <option value="#2193b0">Blue</option>
                         <option value="#6dd5ed">Light Blue</option>
                         <option value="#4CAF50">Green</option>
@@ -147,12 +147,12 @@
                 <div class="flex space-x-4">
                     <label class="flex items-center">
                         <input type="checkbox" name="for_student" value="1" checked
-                               class="rounded border-gray-300 text-blue-500 focus:ring-blue-500">
+                               class="rounded-sm border-gray-300 text-blue-500 focus:ring-blue-500">
                         <span class="ml-2 text-sm text-gray-600">For Students</span>
                     </label>
                     <label class="flex items-center">
                         <input type="checkbox" name="for_lecturer" value="1" checked
-                               class="rounded border-gray-300 text-blue-500 focus:ring-blue-500">
+                               class="rounded-sm border-gray-300 text-blue-500 focus:ring-blue-500">
                         <span class="ml-2 text-sm text-gray-600">For Lecturers</span>
                     </label>
                 </div>

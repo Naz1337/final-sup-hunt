@@ -23,19 +23,19 @@
     </div>
 
     @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('success') }}
     </div>
     @endif
 
     @if(session('error'))
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('error') }}
     </div>
     @endif
 
     @if(session('warning'))
-    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('warning') }}
     </div>
     @endif
@@ -59,14 +59,14 @@
 
                 <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
                     <div class="flex">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <i class="fas fa-info-circle text-blue-400"></i>
                         </div>
                         <div class="ml-3">
                             <h3 class="text-sm font-medium text-blue-800">CSV File Format</h3>
                             <div class="mt-2 text-sm text-blue-700">
                                 <p class="mb-2">Your CSV file should contain the following columns:</p>
-                                <div class="bg-white p-3 rounded border border-blue-200 font-mono text-sm">
+                                <div class="bg-white p-3 rounded-sm border border-blue-200 font-mono text-sm">
                                     Staff ID, Name, Email, Research Group
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         @foreach(['CSRG', 'VISIC', 'MIRG', 'Cy-SIG', 'SERG', 'KECL', 'DSSim', 'DBIS', 'EDU-TECH', 'ISP', 'CNRG', 'SCORE'] as $group)
                         <div class="program-item">
-                            <span class="text-xs font-semibold bg-indigo-100 text-indigo-800 px-2 py-1 rounded">{{ $group }}</span>
+                            <span class="text-xs font-semibold bg-indigo-100 text-indigo-800 px-2 py-1 rounded-sm">{{ $group }}</span>
                         </div>
                         @endforeach
                     </div>
@@ -87,7 +87,7 @@
 
                 <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
                     <div class="flex">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <i class="fas fa-exclamation-triangle text-yellow-400"></i>
                         </div>
                         <div class="ml-3">
@@ -124,7 +124,7 @@
                     @csrf
                     <div class="mb-4">
                         <input type="file" name="csv_file" accept=".csv" required
-                               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                               class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                         @error('csv_file')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -166,21 +166,21 @@
                 <div>
                     <label for="edit_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input type="text" id="edit_name" name="name"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Email -->
                 <div>
                     <label for="edit_email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <input type="email" id="edit_email" name="email"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Research Group -->
                 <div>
                     <label for="edit_research_group" class="block text-sm font-medium text-gray-700 mb-1">Research Group</label>
                     <select id="edit_research_group" name="research_group"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
                         @foreach(['CSRG', 'VISIC', 'MIRG', 'Cy-SIG', 'SERG', 'KECL', 'DSSim', 'DBIS', 'EDU-TECH', 'ISP', 'CNRG', 'SCORE'] as $group)
                             <option value="{{ $group }}">{{ $group }}</option>
                         @endforeach
@@ -204,7 +204,7 @@
     </div>
 
     <!-- Lecturers Table -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
         <table class="min-w-full">
             <thead class="bg-gray-50">
                 <tr>

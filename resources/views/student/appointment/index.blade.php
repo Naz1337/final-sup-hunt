@@ -14,13 +14,13 @@
     </div>
 
     @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('success') }}
     </div>
     @endif
 
     @if(session('error'))
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-sm relative mb-4">
         {{ session('error') }}
     </div>
     @endif
@@ -118,17 +118,17 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Title</label>
                         <input type="text" name="title" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Description</label>
                         <textarea name="description" rows="3" required
-                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200"></textarea>
+                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Supervisor</label>
                         <select name="lecturer_id" required
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200">
                             <option value="">Select a supervisor</option>
                             @foreach($lecturers as $lecturer)
                             <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
@@ -138,17 +138,17 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Date</label>
                         <input type="date" name="date" required min="{{ date('Y-m-d') }}"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Time</label>
                         <input type="time" name="time" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Location</label>
                         <input type="text" name="location" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-blue-300 focus:ring-3 focus:ring-blue-200"
                                placeholder="e.g., Office Room, Google Meet, etc.">
                     </div>
                 </div>
