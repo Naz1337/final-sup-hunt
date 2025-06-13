@@ -57,13 +57,13 @@
                 <div class="group-item bg-white rounded-lg p-4 mb-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center min-w-0">
-                            <i class="fas fa-users text-[{{ $group['color'] }}] text-2xl mr-4 shrink-0"></i>
+                            <i class="fas fa-users text-[{{ $group['color'] }}] text-2xl mr-4 flex-shrink-0"></i>
                             <div class="truncate">
                                 <h4 class="text-lg font-bold">{{ $group['name'] }}</h4>
                                 <p class="text-gray-600">{{ $group['description'] }}</p>
                             </div>
                         </div>
-                        <div class="shrink-0 ml-4">{{ $group['members'] }} Members</div>
+                        <div class="flex-shrink-0 ml-4">{{ $group['members'] }} Members</div>
                     </div>
                 </div>
                 @endforeach

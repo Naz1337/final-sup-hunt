@@ -13,7 +13,6 @@
             </div>
             <div class="text-right">
                 <p class="text-gray-600">Staff ID: {{ Auth::guard('lecturer')->user()->staff_id }}</p>
-                <p class="text-gray-600">Expertise: {{ Auth::guard('lecturer')->user()->expertise }}</p>
             </div>
         </div>
     </div>
@@ -60,6 +59,7 @@
                             {{ $task->start_date->format('d M Y') }} - 
                             {{ $task->end_date->format('d M Y') }}
                         </p>
+                        <h3 class="text-lg font-medium text-gray-800">{{ $task->title }}</h3>
                         @if($task->description)
                         <p class="text-gray-600 mt-1">{{ $task->description }}</p>
                         @endif
