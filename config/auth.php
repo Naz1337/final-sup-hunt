@@ -44,13 +44,13 @@ return [
             'driver' => 'session',
             'provider' => 'coordinators',
         ],
-        'student' => [
-            'driver' => 'session',
-            'provider' => 'students',
-        ],
         'lecturer' => [
             'driver' => 'session',
             'provider' => 'lecturers',
+        ],
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'students',
         ],
     ],
 
@@ -80,13 +80,13 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Coordinator::class,
         ],
-        'students' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Student::class,
-        ],
         'lecturers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Lecturer::class,
+        ],
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student::class,
         ],
     ],
 
