@@ -13,7 +13,7 @@ class CreateLecturersTable extends Migration
             $table->string('staff_id')->unique();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('password');
+            // $table->string('password');
             $table->string('research_group');
             $table->boolean('is_first_login')->default(true);
             $table->timestamps();
@@ -24,4 +24,4 @@ class CreateLecturersTable extends Migration
     {
         Schema::dropIfExists('lecturers');
     }
-} 
+}

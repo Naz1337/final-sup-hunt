@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('students', function (Blueprint $table) {
             $table->string('password')->default(bcrypt('12345678'));
-            $table->boolean('is_first_login')->default(true);
+            // $table->boolean('is_first_login')->default(true);
         });
     }
 
@@ -20,4 +20,4 @@ return new class extends Migration
             $table->dropColumn(['password', 'is_first_login']);
         });
     }
-}; 
+};
