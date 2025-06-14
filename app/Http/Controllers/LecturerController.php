@@ -41,7 +41,7 @@ class LecturerController extends Controller
             ]);
 
             $file = $request->file('csv_file');
-            
+
             if (!$file->isValid()) {
                 return back()->with('error', 'Invalid file upload. Please try again.');
             }
@@ -63,7 +63,7 @@ class LecturerController extends Controller
 
             foreach ($records as $index => $record) {
                 $lineNumber = $index + 2; // +2 because of 0-based index and header row
-                
+
                 // Check if record has all required fields
                 if (count($record) < 4) {
                     $errors[] = "Line {$lineNumber}: Missing required fields. Expected: Staff ID, Name, Email, Research Group";
@@ -150,7 +150,7 @@ class LecturerController extends Controller
         $template .= "FK12002,Dr. Jane Smith,jane@example.com,VISIC\n";
         $template .= "FK12003,Dr. Alice Brown,alice@example.com,MIRG\n";
         $template .= "FK12004,Dr. Bob Wilson,bob@example.com,Cy-SIG\n";
-        
+
         return response($template, 200, $headers);
     }
 
@@ -159,8 +159,9 @@ class LecturerController extends Controller
         return response()->json($lecturer);
     }
 
-    public function update(Request $request, Lecturer $lecturer)
+    public function update(Request $request, $id)
     {
+        $lecturer = Lecturer::findOrFail($id);
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:lecturers,email,' . $lecturer->id,
@@ -173,7 +174,7 @@ class LecturerController extends Controller
                 'email' => $request->email,
                 'research_group' => $request->research_group
             ]);
-            
+
             if ($request->ajax()) {
                 return response()->json(['success' => true]);
             }
@@ -201,4 +202,4 @@ class LecturerController extends Controller
         $lecturers = Lecturer::all();
         return view('coordinator.lecturers.report', compact('lecturers'));
     }
-} 
+}
