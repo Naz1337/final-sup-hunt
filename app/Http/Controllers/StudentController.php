@@ -45,7 +45,7 @@ class StudentController extends Controller
 
             foreach ($records as $index => $record) {
                 $lineNumber = $index + 2; // +2 because of 0-based index and header row
-                
+
                 // Check if record has required fields
                 if (count($record) < 3) {
                     $errors[] = "Line {$lineNumber}: Invalid record format";
@@ -126,7 +126,7 @@ class StudentController extends Controller
         $template .= "CA20002,Jane Smith,jane@example.com\n";
         $template .= "CD20003,Alice Johnson,alice@example.com\n";
         $template .= "CF20004,Bob Wilson,bob@example.com\n";
-        
+
         return response($template, 200, $headers);
     }
 
@@ -157,7 +157,7 @@ class StudentController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
             ]);
-            
+
             if ($request->ajax()) {
                 return response()->json(['success' => true]);
             }
@@ -169,4 +169,4 @@ class StudentController extends Controller
             return back()->with('error', 'Failed to update student.');
         }
     }
-} 
+}
