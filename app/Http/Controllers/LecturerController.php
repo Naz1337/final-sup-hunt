@@ -159,9 +159,9 @@ class LecturerController extends Controller
         return response()->json($lecturer);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $lecturer = Lecturer::findOrFail($id);
+        $lecturer = Lecturer::findOrFail($request->query('id'));
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:lecturers,email,' . $lecturer->id,

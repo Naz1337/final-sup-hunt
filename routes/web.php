@@ -65,7 +65,7 @@ Route::middleware(['auth:coordinator'])->group(function () {
     Route::get('/lecturers/report', [LecturerController::class, 'generateReport'])->name('coordinator.lecturers.report');
     Route::delete('/lecturers/{lecturer}', [LecturerController::class, 'destroy'])->name('coordinator.lecturers.destroy');
     Route::get('/lecturers/{lecturer}/edit', [LecturerController::class, 'edit'])->name('coordinator.lecturers.edit');
-    Route::put('/lecturers/{id}', [LecturerController::class, 'update'])->name('coordinator.lecturers.update');
+    Route::put('/lecturers', [LecturerController::class, 'update'])->name('coordinator.lecturers.update');
 });
 
 // Quota Management Routes
@@ -190,7 +190,6 @@ Route::middleware(['auth:coordinator'])->group(function () {
 
     // Lecturer Management Routes
     Route::get('/coordinator/lecturers', [LecturerController::class, 'index'])->name('coordinator.lecturers.index');
-    Route::put('/coordinator/lecturers/{lecturer}', [LecturerController::class, 'update'])->name('coordinator.lecturers.update');
 });
 
 // Coordinator's lecturer management routes
