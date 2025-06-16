@@ -23,18 +23,19 @@ class LecturerAuthController extends Controller
         ]);
 
         if (Auth::guard('lecturer')->attempt($credentials)) {
-            $lecturer = Auth::guard('lecturer')->user();
+            $request->session()->regenerate();
             
+            $lecturer = Auth::guard('lecturer')->user();
             if ($lecturer->is_first_login) {
                 return redirect()->route('lecturer.change-password');
             }
 
-            return redirect()->route('lecturer.dashboard');
+            return redirect()->intended(route('lecturer.dashboard'));
         }
 
         return back()->withErrors([
             'staff_id' => 'The provided credentials do not match our records.',
-        ]);
+        ])->onlyInput('staff_id');
     }
 
     public function showChangePasswordForm()
@@ -59,12 +60,15 @@ class LecturerAuthController extends Controller
         $lecturer->is_first_login = false;
         $lecturer->save();
 
-        return redirect()->route('lecturer.dashboard')->with('success', 'Password changed successfully');
+        return redirect()->route('lecturer.dashboard')
+                        ->with('success', 'Password changed successfully');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::guard('lecturer')->logout();
-        return redirect()->route('lecturer.login');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 } 

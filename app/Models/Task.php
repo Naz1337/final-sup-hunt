@@ -7,49 +7,37 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     protected $fillable = [
-        'name',
+        'title',
         'description',
         'start_date',
         'end_date',
         'status',
-        'color',
-        'for_student',
-        'for_lecturer'
+        'for_role'
     ];
 
     protected $casts = [
         'start_date' => 'datetime',
-        'end_date' => 'datetime',
-        'for_student' => 'boolean',
-        'for_lecturer' => 'boolean'
+        'end_date' => 'datetime'
     ];
 
-    public function getProgressPercentageAttribute()
+    // Helper method to get status badge color
+    public function getStatusColorClass()
     {
-        $now = now();
-        
-        if ($now < $this->start_date) {
-            return 0;
-        }
-        
-        if ($now > $this->end_date) {
-            return 100;
-        }
-        
-        $totalDuration = $this->end_date->diffInSeconds($this->start_date);
-        $elapsedDuration = $now->diffInSeconds($this->start_date);
-        
-        return min(100, round(($elapsedDuration / $totalDuration) * 100));
+        return $this->status === 'in-progress' 
+            ? 'bg-blue-100 text-blue-800' 
+            : 'bg-green-100 text-green-800';
     }
 
-    public function getStatusAttribute($value)
+    // Helper method to get role badge color
+    public function getRoleColorClass()
     {
-        if ($this->end_date < now()) {
-            return 'completed';
+        switch ($this->for_role) {
+            case 'Student':
+                return 'bg-blue-100 text-blue-800';
+            case 'Lecturer':
+                return 'bg-pink-100 text-pink-800';
+            default:
+                return 'bg-purple-100 text-purple-800';
         }
-        if ($this->start_date > now()) {
-            return 'upcoming';
-        }
-        return 'in-progress';
     }
 } 

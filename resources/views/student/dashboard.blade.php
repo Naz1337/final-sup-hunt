@@ -48,7 +48,7 @@
     </div>
 
     <!-- Timeframe Section -->
-    <div class="bg-white rounded-lg shadow-md p-6">
+    <!-- <div class="bg-white rounded-lg shadow-md p-6">
         <h3 class="text-xl font-semibold text-gray-800 mb-4">Current Timeline</h3>
         <div class="space-y-4">
             @forelse($tasks ?? [] as $task)
@@ -75,6 +75,35 @@
                 <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
                     <div class="h-2 rounded-full" 
                          style="width: {{ $task->progress_percentage }}%; background-color: {{ $task->color }}"></div>
+                </div>
+            </div>
+            @empty
+            <p class="text-gray-600 text-center py-4">No active tasks at the moment.</p>
+            @endforelse
+        </div>
+    </div> -->
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Current Timeline</h3>
+        <div class="space-y-4">
+            @forelse($tasks as $task)
+            <div class="border-l-4 pl-4" style="border-color: {{ $task->color }}">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-semibold text-gray-700">{{ $task->name }}</h4>
+                        <p class="text-sm text-gray-600">
+                            {{ $task->start_date->format('d M Y') }} - 
+                            {{ $task->end_date->format('d M Y') }}
+                        </p>
+                        <h3 class="text-lg font-medium text-gray-800">{{ $task->title }}</h3>
+                        @if($task->description)
+                        <p class="text-gray-600 mt-1">{{ $task->description }}</p>
+                        @endif
+                    </div>
+                    <span class="inline-block px-2 py-1 text-sm rounded-full"
+                          style="background-color: {{ $task->color }}20; color: {{ $task->color }}">
+                        {{ $task->status }}
+                    </span>
                 </div>
             </div>
             @empty

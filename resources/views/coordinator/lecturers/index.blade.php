@@ -129,7 +129,6 @@
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="flex justify-end space-x-3">
                         <button type="button" 
                                 onclick="document.getElementById('importModal').classList.add('hidden')"
                                 class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
@@ -226,19 +225,15 @@
                             {{ $lecturer->research_group }}
                         </span>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex space-x-2">
-                            <button onclick="editLecturer({{ $lecturer->id }})" 
-                                    class="text-blue-500 hover:text-blue-700 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-2">
                             <form action="{{ route('coordinator.lecturers.destroy', $lecturer) }}" 
                                   method="POST" 
-                                  onsubmit="return confirm('Are you sure you want to delete this lecturer?');"
-                                  class="inline">
+                                  class="inline"
+                                  onsubmit="return confirm('Are you sure you want to delete this lecturer?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 transition-colors">
+                                <button type="submit" class="text-red-500 hover:text-red-700">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>

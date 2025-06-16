@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentsTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -13,7 +13,9 @@ class CreateStudentsTable extends Migration
             $table->string('matric_id')->unique();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('program');
+            $table->string('password');
+            $table->boolean('is_first_login')->default(true);
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
     }
@@ -22,4 +24,4 @@ class CreateStudentsTable extends Migration
     {
         Schema::dropIfExists('students');
     }
-} 
+};

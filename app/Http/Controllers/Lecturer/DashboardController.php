@@ -14,30 +14,38 @@ class DashboardController extends Controller
     {
         $lecturer = Auth::guard('lecturer')->user();
         
+        // Get tasks for lecturers
+        $tasks = Task::where(function($query) {
+                    $query->where('for_role', 'All')
+                          ->orWhere('for_role', 'Lecturer');
+                })
+                ->where(function($query) {
+                    $query->where('start_date', '<=', now())
+                          ->where('end_date', '>=', now());
+                })
+                ->orderBy('start_date')
+                ->get();
+
         // Get pending topics count
         $pendingTopicsCount = Topic::where('lecturer_id', $lecturer->id)
                                  ->where('status', 'pending')
                                  ->count();
-        
+
         // Get pending appointments count
         $pendingAppointmentsCount = Appointment::where('lecturer_id', $lecturer->id)
                                              ->where('status', 'pending')
                                              ->count();
-        
-        // Get timeframe tasks
-        $tasks = Task::where('for_lecturer', true)
-                    ->where(function($query) {
-                        $query->where('start_date', '<=', now())
-                              ->where('end_date', '>=', now());
-                    })
-                    ->orderBy('start_date')
-                    ->get();
-        
+
+        // Get total supervised students
+        $totalStudents = Topic::where('lecturer_id', $lecturer->id)
+                             ->where('status', 'approved')
+                             ->count();
+
         return view('lecturer.dashboard', compact(
-            'lecturer',
+            'tasks',
             'pendingTopicsCount',
             'pendingAppointmentsCount',
-            'tasks'
+            'totalStudents'
         ));
     }
 } 

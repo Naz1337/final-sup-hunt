@@ -5,7 +5,7 @@ use App\Http\Controllers\Auth\CoordinatorController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\LecturerController;
 use App\Http\Controllers\QuotaController;
-use App\Http\Controllers\TimeframeController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\StudentAuthController;
 use App\Http\Controllers\Auth\LecturerAuthController;
 use App\Http\Controllers\Student\TopicController;
@@ -15,10 +15,11 @@ use App\Http\Controllers\Lecturer\DashboardController;
 use App\Http\Controllers\Lecturer\LecturerTopicController;
 use App\Http\Controllers\Lecturer\LecturerAppointmentController;
 use App\Http\Controllers\Lecturer\LecturerProfileController;
+use App\Http\Controllers\Student\LecturerProfileController as StudentLecturerProfileController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::middleware([
     'auth:sanctum',
@@ -37,17 +38,23 @@ Route::post('/coordinator/logout', [CoordinatorController::class, 'logout'])->na
 // Protected coordinator routes
 Route::middleware(['auth:coordinator'])->group(function () {
     Route::get('/coordinator/dashboard', [CoordinatorController::class, 'showDashboard'])->name('coordinator.dashboard');
+    // Student Management Routes
+    Route::get('/coordinator/students', [StudentController::class, 'index'])->name('coordinator.students.index');
+    Route::get('/coordinator/students/{student}/edit', [StudentController::class, 'edit'])->name('coordinator.students.edit');
+    Route::put('/coordinator/students/{student}', [StudentController::class, 'update'])->name('coordinator.students.update');
+    Route::delete('/coordinator/students/{student}', [StudentController::class, 'destroy'])->name('coordinator.students.destroy');
 });
 
 // Student Management Routes
 Route::middleware(['auth:coordinator'])->group(function () {
     Route::get('/students', [StudentController::class, 'index'])->name('coordinator.students.index');
-    Route::post('/students/import', [StudentController::class, 'importCSV'])->name('coordinator.students.import');
+    Route::post('/coordinator/students/import', [StudentController::class, 'importCSV'])
+        ->name('coordinator.students.import');
     Route::get('/students/template', [StudentController::class, 'downloadTemplate'])->name('coordinator.students.template');
     Route::get('/students/report', [StudentController::class, 'generateReport'])->name('coordinator.students.report');
-    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('coordinator.students.destroy');
     Route::get('/students/{student}/edit', [StudentController::class, 'edit'])->name('coordinator.students.edit');
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('coordinator.students.update');
+    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('coordinator.students.destroy');
 });
 
 // Lecturer Management Routes
@@ -71,31 +78,59 @@ Route::middleware(['auth:coordinator'])->group(function () {
 
 // Timeframe Management Routes
 Route::middleware(['auth:coordinator'])->group(function () {
-    Route::get('/timeframe', [TimeframeController::class, 'index'])->name('coordinator.timeframe.index');
-    Route::post('/timeframe', [TimeframeController::class, 'store'])->name('coordinator.timeframe.store');
-    Route::put('/timeframe/{task}', [TimeframeController::class, 'update'])->name('coordinator.timeframe.update');
-    Route::delete('/timeframe/{task}', [TimeframeController::class, 'destroy'])->name('coordinator.timeframe.destroy');
+    Route::get('/coordinator/timeframe', [TaskController::class, 'index'])->name('coordinator.timeframe.index');
+    Route::post('/coordinator/timeframe', [TaskController::class, 'store'])->name('coordinator.timeframe.store');
+    Route::get('/coordinator/timeframe/{task}/edit', [TaskController::class, 'edit'])->name('coordinator.timeframe.edit');
+    Route::put('/coordinator/timeframe/{task}', [TaskController::class, 'update'])->name('coordinator.timeframe.update');
+    Route::delete('/coordinator/timeframe/{task}', [TaskController::class, 'destroy'])->name('coordinator.timeframe.destroy');
+    Route::patch('/coordinator/timeframe/{task}/toggle-status', [TaskController::class, 'toggleStatus'])->name('coordinator.timeframe.toggle-status');
 });
 
 // Student Auth Routes
 Route::get('/student/login', [StudentAuthController::class, 'showLoginForm'])->name('student.login');
 Route::post('/student/login', [StudentAuthController::class, 'login']);
 Route::post('/student/logout', [StudentAuthController::class, 'logout'])->name('student.logout');
+
+// Student Change Password Routes
 Route::get('/student/change-password', [StudentAuthController::class, 'showChangePasswordForm'])
     ->name('student.change-password')
     ->middleware('auth:student');
 Route::post('/student/change-password', [StudentAuthController::class, 'changePassword'])
+    ->name('student.change-password.update')
     ->middleware('auth:student');
 
 // Lecturer Auth Routes
-Route::get('/lecturer/login', [LecturerAuthController::class, 'showLoginForm'])->name('lecturer.login');
-Route::post('/lecturer/login', [LecturerAuthController::class, 'login']);
-Route::post('/lecturer/logout', [LecturerAuthController::class, 'logout'])->name('lecturer.logout');
-Route::get('/lecturer/change-password', [LecturerAuthController::class, 'showChangePasswordForm'])
-    ->name('lecturer.change-password')
-    ->middleware('auth:lecturer');
-Route::post('/lecturer/change-password', [LecturerAuthController::class, 'changePassword'])
-    ->middleware('auth:lecturer');
+Route::prefix('lecturer')->group(function () {
+    Route::get('/login', [LecturerAuthController::class, 'showLoginForm'])->name('lecturer.login');
+    Route::post('/login', [LecturerAuthController::class, 'login']);
+    Route::post('/logout', [LecturerAuthController::class, 'logout'])->name('lecturer.logout');
+    
+    // Lecturer Change Password Routes
+    Route::get('/change-password', [LecturerAuthController::class, 'showChangePasswordForm'])
+        ->name('lecturer.change-password')
+        ->middleware('auth:lecturer');
+    Route::post('/change-password', [LecturerAuthController::class, 'changePassword'])
+        ->name('lecturer.change-password.update')
+        ->middleware('auth:lecturer');
+    
+    // Protected lecturer routes
+    Route::middleware('auth:lecturer')->group(function () {
+        Route::get('/dashboard', [LecturerController::class, 'dashboard'])->name('lecturer.dashboard');
+        // Add other lecturer routes here
+        
+        // Appointment Routes
+        Route::get('/lecturer/appointments', [LecturerAppointmentController::class, 'index'])->name('lecturer.appointment.index');
+        Route::post('/lecturer/appointments', [LecturerAppointmentController::class, 'store'])->name('lecturer.appointment.store');
+        Route::put('/lecturer/appointments/{appointment}', [LecturerAppointmentController::class, 'update'])->name('lecturer.appointment.update');
+        Route::delete('/lecturer/appointments/{appointment}', [LecturerAppointmentController::class, 'destroy'])->name('lecturer.appointment.destroy');
+
+        // Topic Routes
+        Route::get('/lecturer/topic', [LecturerTopicController::class, 'index'])->name('lecturer.topic.index');
+        Route::post('/lecturer/topic', [LecturerTopicController::class, 'store'])->name('lecturer.topic.store');
+        Route::put('/lecturer/topic/{topic}', [LecturerTopicController::class, 'update'])->name('lecturer.topic.update');
+        Route::delete('/lecturer/topic/{topic}', [LecturerTopicController::class, 'destroy'])->name('lecturer.topic.destroy');
+    });
+});
 
 // Student Routes
 Route::middleware(['auth:student'])->group(function () {
@@ -107,16 +142,23 @@ Route::middleware(['auth:student'])->group(function () {
     Route::post('/student/topics', [TopicController::class, 'store'])->name('student.topic.store');
     Route::put('/student/topics/{topic}', [TopicController::class, 'update'])->name('student.topic.update');
     Route::delete('/student/topics/{topic}', [TopicController::class, 'destroy'])->name('student.topic.destroy');
+    Route::post('/student/topics/{topic}/apply', [TopicController::class, 'apply'])->name('student.topic.apply');
 
     // Appointment Routes
     Route::get('/student/appointments', [AppointmentController::class, 'index'])->name('student.appointment.index');
     Route::post('/student/appointments', [AppointmentController::class, 'store'])->name('student.appointment.store');
     Route::put('/student/appointments/{appointment}', [AppointmentController::class, 'update'])->name('student.appointment.update');
     Route::delete('/student/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('student.appointment.destroy');
+    Route::post('/student/appointments/{appointment}/book', [AppointmentController::class, 'bookAppointment'])
+        ->name('student.appointment.book');
 
     // Profile Routes
     Route::get('/student/profile', [ProfileController::class, 'index'])->name('student.profile.index');
     Route::put('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+
+    // Lecturer Profile Routes
+    Route::get('/student/lecturers', [StudentLecturerProfileController::class, 'index'])->name('student.lecturer.list');
+    Route::get('/student/lecturers/{lecturer}', [StudentLecturerProfileController::class, 'show'])->name('student.lecturer.profile');
 });
 
 // Lecturer Routes
@@ -124,15 +166,79 @@ Route::middleware(['auth:lecturer'])->group(function () {
     Route::get('/lecturer/dashboard', [DashboardController::class, 'index'])->name('lecturer.dashboard');
     
     // Topic Routes
-    Route::get('/lecturer/topics', [LecturerTopicController::class, 'index'])->name('lecturer.topic.index');
-    Route::get('/lecturer/topics/{topic}', [LecturerTopicController::class, 'show'])->name('lecturer.topic.show');
-    Route::put('/lecturer/topics/{topic}', [LecturerTopicController::class, 'update'])->name('lecturer.topic.update');
+    Route::get('/lecturer/topic', [LecturerTopicController::class, 'index'])->name('lecturer.topic.index');
+    Route::post('/lecturer/topic', [LecturerTopicController::class, 'store'])->name('lecturer.topic.store');
+    Route::put('/lecturer/topic/{topic}', [LecturerTopicController::class, 'update'])->name('lecturer.topic.update');
+    Route::delete('/lecturer/topic/{topic}', [LecturerTopicController::class, 'destroy'])->name('lecturer.topic.destroy');
     
     // Appointment Routes
     Route::get('/lecturer/appointments', [LecturerAppointmentController::class, 'index'])->name('lecturer.appointment.index');
+    Route::post('/lecturer/appointments', [LecturerAppointmentController::class, 'store'])->name('lecturer.appointment.store');
     Route::put('/lecturer/appointments/{appointment}', [LecturerAppointmentController::class, 'update'])->name('lecturer.appointment.update');
+    Route::delete('/lecturer/appointments/{appointment}', [LecturerAppointmentController::class, 'destroy'])->name('lecturer.appointment.destroy');
     
     // Profile Routes
     Route::get('/lecturer/profile', [LecturerProfileController::class, 'index'])->name('lecturer.profile.index');
     Route::put('/lecturer/profile', [LecturerProfileController::class, 'update'])->name('lecturer.profile.update');
+});
+
+// Coordinator routes with auth middleware
+Route::middleware(['auth:coordinator'])->group(function () {
+    // Student Management Routes
+    Route::get('/coordinator/students', [StudentController::class, 'index'])->name('coordinator.students.index');
+    Route::put('/coordinator/students/{student}', [StudentController::class, 'update'])->name('coordinator.students.update');
+
+    // Lecturer Management Routes
+    Route::get('/coordinator/lecturers', [LecturerController::class, 'index'])->name('coordinator.lecturers.index');
+    Route::put('/coordinator/lecturers/{lecturer}', [LecturerController::class, 'update'])->name('coordinator.lecturers.update');
+});
+
+// Coordinator's lecturer management routes
+Route::prefix('coordinator')->middleware(['auth:coordinator'])->group(function () {
+    Route::get('/lecturers', [LecturerController::class, 'index'])->name('coordinator.lecturers.index');
+    Route::post('/lecturers/import', [LecturerController::class, 'importCSV'])->name('coordinator.lecturers.import');
+    Route::get('/lecturers/template', [LecturerController::class, 'downloadTemplate'])->name('coordinator.lecturers.template');
+    // ... other coordinator routes
+});
+
+Route::middleware(['auth:coordinator'])->group(function () {
+    Route::put('/coordinator/quotas/{quota}', [QuotaController::class, 'update'])->name('coordinator.quotas.update');
+    // ... other quota routes
+});
+
+Route::middleware(['auth:coordinator'])->group(function () {
+    Route::get('/lecturers/template/download', [LecturerController::class, 'downloadTemplate'])
+        ->name('coordinator.lecturers.template.download');
+});
+
+Route::middleware(['auth:coordinator'])->group(function () {
+    Route::post('/coordinator/students/import', [StudentController::class, 'importCSV'])
+        ->name('coordinator.students.import');
+    Route::get('/coordinator/students/template/download', [StudentController::class, 'downloadTemplate'])
+        ->name('coordinator.students.template.download');
+});
+
+Route::middleware(['auth:coordinator'])->group(function () {
+    Route::get('/coordinator/lecturers/report', [LecturerController::class, 'generateReport'])
+        ->name('coordinator.lecturers.report');
+});
+
+Route::middleware(['auth:coordinator'])->group(function () {
+    Route::resource('coordinator/timeframe', TaskController::class)
+        ->names([
+            'index' => 'coordinator.timeframe.index',
+            'store' => 'coordinator.timeframe.store',
+            'update' => 'coordinator.timeframe.update',
+            'destroy' => 'coordinator.timeframe.destroy',
+        ]);
+});
+
+Route::middleware(['auth:lecturer'])->group(function () {
+    Route::resource('lecturer/topics', LecturerTopicController::class)
+        ->names([
+            'index' => 'lecturer.topics.index',
+            'store' => 'lecturer.topics.store',
+            'update' => 'lecturer.topics.update',
+            'destroy' => 'lecturer.topics.destroy',
+        ]);
 });
