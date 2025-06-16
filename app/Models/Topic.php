@@ -2,27 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'student_id',
-        'lecturer_id',
         'title',
         'description',
-        'status', // pending, approved, rejected
+        'research_area',
+        'lecturer_id',
+        'student_id',
+        'status',
         'feedback',
-        'research_area'
+        'created_by'
     ];
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
 
     public function lecturer()
     {
         return $this->belongsTo(Lecturer::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
     }
 } 

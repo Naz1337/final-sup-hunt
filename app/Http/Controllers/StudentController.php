@@ -2,132 +2,174 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Student;
-use PDF;
+use App\Models\Lecturer;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
-    // Program mapping based on matric ID prefix
-    private $programMapping = [
+    // Add program mapping constant
+    private const PROGRAM_MAPPING = [
         'CB' => 'Software Engineering',
         'CA' => 'Computer System & Networking',
         'CD' => 'Computer Graphics & Multimedia',
         'CF' => 'Cybersecurity'
     ];
 
+    // Helper function to determine program from matric ID
+    private function getProgramFromMatricId($matricId)
+    {
+        $prefix = strtoupper(substr($matricId, 0, 2));
+        return self::PROGRAM_MAPPING[$prefix] ?? null;
+    }
+
     public function index()
     {
-        $students = Student::paginate(10);
+        $students = Student::orderBy('name')->paginate(10);
         return view('coordinator.students.index', compact('students'));
     }
 
     public function importCSV(Request $request)
     {
         $request->validate([
-            'csv_file' => 'required|mimes:csv,txt|max:2048'
-        ], [
-            'csv_file.required' => 'Please select a CSV file to import.',
-            'csv_file.mimes' => 'The file must be a CSV file.',
+            'file' => 'required|file|mimes:csv,txt'
         ]);
 
         try {
-            $file = $request->file('csv_file');
-            $path = $file->getRealPath();
-            $records = array_map('str_getcsv', file($path));
-
-            // Remove header row
-            array_shift($records);
-
-            $successCount = 0;
-            $errorCount = 0;
+            DB::beginTransaction();
+            
+            $file = $request->file('file');
+            $handle = fopen($file, 'r');
+            
+            // Skip the header row
+            $header = fgetcsv($handle);
+            
+            $importCount = 0;
             $errors = [];
+            $line = 2; // Start from line 2 as line 1 is header
 
-            foreach ($records as $index => $record) {
-                $lineNumber = $index + 2; // +2 because of 0-based index and header row
-                
-                // Check if record has required fields
-                if (count($record) < 3) {
-                    $errors[] = "Line {$lineNumber}: Invalid record format";
-                    $errorCount++;
-                    continue;
-                }
-
-                $matricId = trim($record[0]);
-                $name = trim($record[1]);
-                $email = trim($record[2]);
-
-                // Validate matric ID format
-                if (!preg_match('/^(CB|CA|CD|CF)\d{5}$/i', $matricId)) {
-                    $errors[] = "Line {$lineNumber}: Invalid matric ID format for '{$matricId}'";
-                    $errorCount++;
-                    continue;
-                }
-
-                // Check for duplicate matric ID
-                if (Student::where('matric_id', $matricId)->exists()) {
-                    $errors[] = "Line {$lineNumber}: Duplicate matric ID '{$matricId}'";
-                    $errorCount++;
-                    continue;
-                }
-
-                // Get program from matric ID prefix
-                $prefix = strtoupper(substr($matricId, 0, 2));
-                $program = $this->programMapping[$prefix] ?? null;
-
-                if (!$program) {
-                    $errors[] = "Line {$lineNumber}: Invalid program prefix in matric ID '{$matricId}'";
-                    $errorCount++;
-                    continue;
-                }
-
+            while (($data = fgetcsv($handle)) !== false) {
                 try {
+                    if (count($data) < 3) {
+                        $errors[] = "Line {$line}: Missing required fields";
+                        continue;
+                    }
+
+                    [$matric_id, $name, $email] = $data;
+
+                    // Validate data
+                    if (empty($matric_id) || empty($name) || empty($email)) {
+                        $errors[] = "Line {$line}: All fields are required";
+                        continue;
+                    }
+
+                    // Get program based on matric ID prefix
+                    $program = $this->getProgramFromMatricId($matric_id);
+                    if (!$program) {
+                        $errors[] = "Line {$line}: Invalid matric ID prefix. Must be CB, CA, CD, or CF";
+                        continue;
+                    }
+
+                    // Check if student already exists
+                    if (Student::where('matric_id', $matric_id)->exists()) {
+                        $errors[] = "Line {$line}: Student with matric ID {$matric_id} already exists";
+                        continue;
+                    }
+
+                    if (Student::where('email', $email)->exists()) {
+                        $errors[] = "Line {$line}: Student with email {$email} already exists";
+                        continue;
+                    }
+
+                    // Create new student with program
                     Student::create([
-                        'matric_id' => $matricId,
+                        'matric_id' => $matric_id,
                         'name' => $name,
                         'email' => $email,
-                        'program' => $program
+                        'program' => $program,
+                        'password' => Hash::make($matric_id), // Use matric_id as default password
+                        'is_first_login' => true,
                     ]);
-                    $successCount++;
+
+                    $importCount++;
+
                 } catch (\Exception $e) {
-                    $errors[] = "Line {$lineNumber}: Failed to import record - {$e->getMessage()}";
-                    $errorCount++;
+                    $errors[] = "Line {$line}: " . $e->getMessage();
                 }
+
+                $line++;
             }
 
-            $message = "Import completed. Successfully imported {$successCount} records.";
-            if ($errorCount > 0) {
-                $message .= " Failed to import {$errorCount} records.";
-                return back()->with('warning', $message)->with('importErrors', $errors);
+            fclose($handle);
+            DB::commit();
+
+            $message = "{$importCount} students imported successfully.";
+            if (!empty($errors)) {
+                $message .= " However, there were some errors:";
+                return back()->with([
+                    'warning' => $message,
+                    'importErrors' => $errors
+                ]);
             }
 
             return back()->with('success', $message);
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to process the CSV file: ' . $e->getMessage());
+            DB::rollBack();
+            return back()->with('error', 'Import failed: ' . $e->getMessage());
         }
-    }
-
-    public function generateReport()
-    {
-        $students = Student::all();
-        return view('coordinator.students.report', compact('students'));
     }
 
     public function downloadTemplate()
     {
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename=student_template.csv',
-        ];
-
-        $template = "Matric ID,Name,Email\n";
-        $template .= "CB20001,John Doe,john@example.com\n";
-        $template .= "CA20002,Jane Smith,jane@example.com\n";
-        $template .= "CD20003,Alice Johnson,alice@example.com\n";
-        $template .= "CF20004,Bob Wilson,bob@example.com\n";
+        $filePath = public_path('templates/students_template.csv');
         
-        return response($template, 200, $headers);
+        if (!file_exists($filePath)) {
+            return back()->with('error', 'Template file not found.');
+        }
+
+        return response()->download($filePath, 'students_template.csv', [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=students_template.csv'
+        ]);
+    }
+
+    public function generateReport()
+    {
+        $students = Student::with('topics')->get();
+        return view('coordinator.students.report', compact('students'));
+    }
+
+    public function edit(Student $student)
+    {
+        return view('coordinator.students.edit', compact('student'));
+    }
+
+    public function update(Request $request, Student $student)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students,email,' . $student->id,
+            'matric_id' => 'required|string|unique:students,matric_id,' . $student->id,
+            'phone' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:8'
+        ]);
+
+        try {
+            if ($request->filled('password')) {
+                $validated['password'] = Hash::make($validated['password']);
+            } else {
+                unset($validated['password']);
+            }
+
+            $student->update($validated);
+            return redirect()->route('coordinator.students.index')->with('success', 'Student updated successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to update student: ' . $e->getMessage());
+        }
     }
 
     public function destroy(Student $student)
@@ -136,37 +178,37 @@ class StudentController extends Controller
             $student->delete();
             return back()->with('success', 'Student deleted successfully.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to delete student.');
+            return back()->with('error', 'Failed to delete student: ' . $e->getMessage());
         }
     }
 
-    public function edit(Student $student)
+    public function store(Request $request)
     {
-        return response()->json($student);
-    }
-
-    public function update(Request $request, Student $student)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:students,email,' . $student->id,
+        $validated = $request->validate([
+            'matric_id' => 'required|string|unique:students',
+            'name' => 'required|string',
+            'email' => 'required|email|unique:students',
         ]);
 
+        // Get program based on matric ID prefix
+        $program = $this->getProgramFromMatricId($request->matric_id);
+        if (!$program) {
+            return back()->with('error', 'Invalid matric ID prefix. Must be CB, CA, CD, or CF');
+        }
+
         try {
-            $student->update([
+            Student::create([
+                'matric_id' => $request->matric_id,
                 'name' => $request->name,
                 'email' => $request->email,
+                'program' => $program,
+                'password' => Hash::make($request->matric_id),
+                'is_first_login' => true
             ]);
-            
-            if ($request->ajax()) {
-                return response()->json(['success' => true]);
-            }
-            return back()->with('success', 'Student updated successfully.');
+
+            return back()->with('success', 'Student created successfully.');
         } catch (\Exception $e) {
-            if ($request->ajax()) {
-                return response()->json(['success' => false, 'message' => 'Failed to update student.']);
-            }
-            return back()->with('error', 'Failed to update student.');
+            return back()->with('error', 'Failed to create student: ' . $e->getMessage());
         }
     }
 } 

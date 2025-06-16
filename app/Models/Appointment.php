@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $fillable = [
-        'student_id',
         'lecturer_id',
+        'student_id',
         'title',
         'description',
         'date',
         'time',
-        'status', // pending, approved, rejected, completed
+        'location',
         'meeting_link',
-        'feedback',
-        'location'
+        'status',
+        'feedback'
     ];
 
     protected $casts = [
@@ -24,13 +24,13 @@ class Appointment extends Model
         'time' => 'datetime'
     ];
 
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
-
     public function lecturer()
     {
         return $this->belongsTo(Lecturer::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
     }
 } 

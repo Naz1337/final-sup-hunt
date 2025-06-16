@@ -54,6 +54,25 @@ class CoordinatorController extends Controller
             'Cybersecurity' => Student::where('program', 'Cybersecurity')->count()
         ];
 
+        // Get lecturers and students with search/sort
+        $search = request('search');
+        $sortBy = request('sort_by', 'name'); // default sort by name
+
+        $lecturers = Lecturer::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->orderBy($sortBy == 'research_group' ? 'research_group' : 'name')
+            ->get();
+
+        $students = Student::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->orderBy($sortBy == 'program' ? 'program' : 'name') // Use program instead of research_group for students
+            ->get();
+
+        // Get research groups data
         $researchGroups = [
             [
                 'name' => 'CSRG',
@@ -129,6 +148,15 @@ class CoordinatorController extends Controller
             ]
         ];
 
-        return view('coordinator.dashboard', compact('totalStudents', 'totalLecturers', 'studentDistribution', 'researchGroups'));
+        return view('coordinator.dashboard', compact(
+            'totalStudents', 
+            'totalLecturers', 
+            'studentDistribution', 
+            'researchGroups',
+            'lecturers',
+            'students',
+            'search',
+            'sortBy'
+        ));
     }
 } 

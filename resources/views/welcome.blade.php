@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Innovisory System</title>
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <!-- Add FontAwesome for modern icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
+            <style>
         :root {
             --primary-bg: #C8D9E6;
             --primary-dark: #2C3E50;
@@ -119,21 +119,21 @@
                 margin-top: 2rem;
             }
         }
-    </style>
-</head>
+            </style>
+    </head>
 <body>
     <div class="logo-container">
         <img src="{{ asset('images/innovisory.png') }}" alt="Innovisory Logo">
         
-    </div>
+                                </div>
     <!-- Hero Section -->
     <section class="hero-section flex items-center justify-center">
         <div class="text-center text-white relative z-10">
             <div class="welcome-text">
                 <h1 class="text-6xl font-bold mb-6" data-aos="fade-down">Welcome to Innovisory!</h1>
                 <p class="text-2xl mb-16" data-aos="fade-up">Your Academic Advisory Management Solution</p>
-            </div>
-            
+                                        </div>
+
             <!-- Login Cards -->
             <div class="container mx-auto px-4">
                 <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -141,25 +141,25 @@
                     <div class="login-card p-8 text-center" data-aos="fade-up" data-aos-delay="100">
                         <div class="icon-wrapper">
                             <i class="fas fa-user-graduate"></i>
-                        </div>
+                                        </div>
                         <h3 class="text-2xl font-bold mb-4 text-gray-800">Student Portal</h3>
                         <p class="text-gray-600 mb-8">Access your academic advisory services and schedule meetings with your advisor.</p>
                         <a href="/student/login" class="login-btn text-white inline-block hover:shadow-lg">
                             Student Login
                         </a>
-                    </div>
+                                </div>
 
                     <!-- Lecturer Login -->
                     <div class="login-card p-8 text-center" data-aos="fade-up" data-aos-delay="200">
                         <div class="icon-wrapper">
                             <i class="fas fa-chalkboard-teacher"></i>
-                        </div>
+                                </div>
                         <h3 class="text-2xl font-bold mb-4 text-gray-800">Lecturer Portal</h3>
                         <p class="text-gray-600 mb-8">Manage your advisees and maintain records of advisory sessions.</p>
                         <a href="/lecturer/login" class="login-btn text-white inline-block hover:shadow-lg">
                             Lecturer Login
                         </a>
-                    </div>
+                                </div>
 
                     <!-- Coordinator Login -->
                     <div class="login-card p-8 text-center" data-aos="fade-up" data-aos-delay="300">
@@ -191,5 +191,5 @@
             once: true
         });
     </script>
-</body>
+    </body>
 </html>

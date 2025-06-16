@@ -10,9 +10,13 @@ class QuotaController extends Controller
 {
     public function index()
     {
-        $quotas = Quota::with('lecturer')->paginate(10);
-        $lecturers = Lecturer::doesntHave('quota')->get();
-        return view('coordinator.quotas.index', compact('quotas', 'lecturers'));
+        $quotas = Quota::with('lecturer')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // Show 10 items per page. You can adjust this number
+    
+        $unassignedLecturers = Lecturer::whereDoesntHave('quota')->get();
+    
+        return view('coordinator.quotas.index', compact('quotas', 'unassignedLecturers'));
     }
 
     public function store(Request $request)
@@ -20,9 +24,6 @@ class QuotaController extends Controller
         $request->validate([
             'lecturer_id' => 'required|exists:lecturers,id|unique:quotas,lecturer_id',
             'max_supervisees' => 'required|integer|min:0|max:20'
-        ], [
-            'lecturer_id.unique' => 'This lecturer already has a quota assigned.',
-            'max_supervisees.max' => 'Maximum supervisees cannot exceed 20.'
         ]);
 
         try {

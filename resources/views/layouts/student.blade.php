@@ -28,6 +28,10 @@
                        class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
                         Dashboard
                     </a>
+                    <a href="{{ route('student.lecturer.list') }}"
+                       class="nav-link {{ request()->routeIs('student.lecturer.list') ? 'active' : '' }}">
+                        List of Lecturer
+                    </a>
                     <a href="{{ route('student.topic.index') }}"
                        class="nav-link {{ request()->routeIs('student.topic.*') ? 'active' : '' }}">
                         Topic
@@ -40,10 +44,11 @@
                        class="nav-link {{ request()->routeIs('student.profile.*') ? 'active' : '' }}">
                         Profile
                     </a>
-                    <form method="POST" action="{{ route('student.logout') }}" class="ml-4">
+                    <form method="POST" action="{{ route('student.logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="text-gray-600 hover:text-gray-900">
-                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        <button type="submit" class="flex items-center px-4 py-2 hover:bg-gray-100 text-gray-700">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            Logout
                         </button>
                     </form>
                 </div>
@@ -56,6 +61,7 @@
         @yield('content')
     </main>
 
+    <!-- Scripts -->
     @stack('scripts')
 </body>
 </html>

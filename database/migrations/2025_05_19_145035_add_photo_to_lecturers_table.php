@@ -6,18 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::table('lecturers', function (Blueprint $table) {
-            $table->string('password')->default(bcrypt('12345678'));
-            $table->boolean('is_first_login')->default(true);
+            $table->string('photo')->nullable()->after('research_group');
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('lecturers', function (Blueprint $table) {
-            $table->dropColumn(['password', 'is_first_login']);
+            $table->dropColumn('photo');
         });
     }
-}; 
+};
