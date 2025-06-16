@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('matric_id')->unique();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('program');
             $table->string('password');
             $table->boolean('is_first_login')->default(true);
             $table->string('phone')->nullable();
