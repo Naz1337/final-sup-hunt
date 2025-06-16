@@ -7,13 +7,13 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold">Student Management</h2>
         <div class="flex space-x-4">
-            <button onclick="document.getElementById('importModal').classList.remove('hidden')"
+            <button onclick="document.getElementById('importModal').classList.remove('hidden')" 
                     class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
                 <i class="fas fa-file-import mr-2"></i>
                 Import Students
             </button>
-
-            <a href="{{ route('coordinator.students.report') }}"
+            
+            <a href="{{ route('coordinator.students.report') }}" 
                target="_blank"
                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center">
                 <i class="fas fa-print mr-2"></i>
@@ -33,7 +33,7 @@
         <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-lg rounded-md bg-white">
             <div class="import-instructions">
                 <h3 class="text-xl font-semibold mb-4 text-gray-800">Import Students</h3>
-
+                
                 <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
                     <div class="flex">
                         <div class="flex-shrink-0">
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="flex justify-between items-center mb-4">
-                    <a href="{{ route('coordinator.students.template') }}"
+                    <a href="{{ route('coordinator.students.template') }}" 
                        class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
                         <i class="fas fa-download mr-2"></i>
                         Download Template
@@ -102,12 +102,12 @@
                         @enderror
                     </div>
                     <div class="flex justify-end space-x-3">
-                        <button type="button"
+                        <button type="button" 
                                 onclick="document.getElementById('importModal').classList.add('hidden')"
                                 class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
                             Cancel
                         </button>
-                        <button type="submit"
+                        <button type="submit" 
                                 class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">
                             Import
                         </button>
@@ -121,49 +121,49 @@
     <div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
         <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-lg rounded-md bg-white">
             <h3 class="text-xl font-semibold mb-4 text-gray-800">Edit Student</h3>
-
+            
             <form id="editForm" method="POST" class="space-y-4">
                 @csrf
                 @method('PUT')
-
+                
                 <!-- Matric ID (Read-only) -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Matric ID</label>
-                    <input type="text" id="edit_matric_id"
-                           class="w-full px-3 py-2 border rounded-lg bg-gray-50"
+                    <input type="text" id="edit_matric_id" 
+                           class="w-full px-3 py-2 border rounded-lg bg-gray-50" 
                            readonly>
                 </div>
 
                 <!-- Name -->
                 <div>
                     <label for="edit_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                    <input type="text" id="edit_name" name="name"
+                    <input type="text" id="edit_name" name="name" 
                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Email -->
                 <div>
                     <label for="edit_email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" id="edit_email" name="email"
+                    <input type="email" id="edit_email" name="email" 
                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Program (Read-only) -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Program</label>
-                    <input type="text" id="edit_program"
-                           class="w-full px-3 py-2 border rounded-lg bg-gray-50"
+                    <input type="text" id="edit_program" 
+                           class="w-full px-3 py-2 border rounded-lg bg-gray-50" 
                            readonly>
                 </div>
 
                 <!-- Buttons -->
                 <div class="flex justify-end space-x-3 mt-6">
-                    <button type="button"
+                    <button type="button" 
                             onclick="document.getElementById('editModal').classList.add('hidden')"
                             class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
                         Cancel
                     </button>
-                    <button type="submit"
+                    <button type="submit" 
                             class="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600">
                         Save Changes
                     </button>
@@ -193,12 +193,12 @@
                     <td class="px-6 py-4 whitespace-nowrap">{{ $student->program }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex space-x-2">
-                            <button onclick="editStudent({{ $student->id }})"
+                            <button onclick="editStudent({{ $student->id }})" 
                                     class="text-blue-500 hover:text-blue-700 transition-colors">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <form action="{{ route('coordinator.students.destroy', $student) }}"
-                                  method="POST"
+                            <form action="{{ route('coordinator.students.destroy', $student) }}" 
+                                  method="POST" 
                                   onsubmit="return confirm('Are you sure you want to delete this student?');"
                                   class="inline">
                                 @csrf
@@ -230,10 +230,10 @@ function editStudent(id) {
             document.getElementById('edit_name').value = student.name;
             document.getElementById('edit_email').value = student.email;
             document.getElementById('edit_program').value = student.program;
-
+            
             // Set the form action URL with the correct route
-            document.getElementById('editForm').action = `{{-- route('coordinator.students.update', '') --}}/${student.id}`;
-
+            document.getElementById('editForm').action = `{{ route('coordinator.students.update', '') }}/${student.id}`;
+            
             // Show the modal
             document.getElementById('editModal').classList.remove('hidden');
         })
@@ -253,7 +253,7 @@ document.getElementById('editModal').addEventListener('click', function(e) {
 // Add form submission handling
 document.getElementById('editForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
+    
     const formData = new FormData(this);
     const action = this.getAttribute('action');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -286,4 +286,4 @@ document.getElementById('editForm').addEventListener('submit', function(e) {
 </script>
 @endpush
 
-@endsection
+@endsection 
