@@ -15,6 +15,7 @@ use App\Http\Controllers\Lecturer\DashboardController;
 use App\Http\Controllers\Lecturer\LecturerTopicController;
 use App\Http\Controllers\Lecturer\LecturerAppointmentController;
 use App\Http\Controllers\Lecturer\LecturerProfileController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Student\LecturerProfileController as StudentLecturerProfileController;
 
 Route::get('/', function () {
@@ -131,6 +132,10 @@ Route::prefix('lecturer')->group(function () {
         Route::delete('/lecturer/topic/{topic}', [LecturerTopicController::class, 'destroy'])->name('lecturer.topic.destroy');
     });
 });
+
+//Forgot Password Form Routes
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm'])->name('forgot.password.form');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendTemporaryPassword'])->name('forgot.password.send');
 
 // Student Routes
 Route::middleware(['auth:student'])->group(function () {

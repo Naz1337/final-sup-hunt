@@ -159,10 +159,45 @@
 
     <!-- Edit Modal -->
     <div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div class="mt-3">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-900">Edit Student</h3>
+        <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-lg rounded-md bg-white">
+            <h3 class="text-xl font-semibold mb-4 text-gray-800">Edit Student</h3>
+
+            <form id="editForm" method="POST" class="space-y-4">
+                @csrf
+                @method('PUT')
+
+                <!-- Matric ID (Read-only) -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Matric ID</label>
+                    <input type="text" id="edit_matric_id"
+                           class="w-full px-3 py-2 border rounded-lg bg-gray-50"
+                           readonly>
+                </div>
+
+                <!-- Name -->
+                <div>
+                    <label for="edit_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <input type="text" id="edit_name" name="name"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="edit_email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="edit_email" name="email"
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Program (Read-only) -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Program</label>
+                    <input type="text" id="edit_program"
+                           class="w-full px-3 py-2 border rounded-lg bg-gray-50"
+                           readonly>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex justify-end space-x-3 mt-6">
                     <button type="button"
                             onclick="document.getElementById('editModal').classList.add('hidden')"
                             class="text-gray-500 hover:text-gray-700">

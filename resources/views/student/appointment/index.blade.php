@@ -44,7 +44,7 @@
                                             Location: {{ $appointment->location }}
                                         </div>
                                         @if($appointment->meeting_link && $appointment->status === 'approved')
-                                            <a href="{{ $appointment->meeting_link }}" 
+                                            <a href="{{ $appointment->meeting_link }}"
                                                target="_blank"
                                                class="text-sm text-blue-600 hover:text-blue-800">
                                                 Join Meeting
@@ -52,7 +52,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                     @if($appointment->status === 'approved') bg-green-100 text-green-800
                                     @elseif($appointment->status === 'rejected') bg-red-100 text-red-800
                                     @elseif($appointment->status === 'completed') bg-gray-100 text-gray-800
@@ -103,7 +103,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button onclick="showBookingModal({{ $appointment->id }})" 
+                                <button onclick="showBookingModal({{ $appointment->id }})"
                                         class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-sm">
                                     Book Slot
                                 </button>
@@ -189,6 +189,29 @@ window.onclick = function(event) {
         closeBookingModal();
     }
 }
+
+// Enforce 24-hour rule on submit
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form[action="{{ route('student.appointment.store') }}"]');
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
+        const dateInput = form.querySelector('input[name="date"]').value;
+        const timeInput = form.querySelector('input[name="time"]').value;
+
+        if (!dateInput || !timeInput) return;
+
+        const selectedDateTime = new Date(`${dateInput}T${timeInput}`);
+        const now = new Date();
+        const diffInMs = selectedDateTime - now;
+        const diffInHours = diffInMs / (1000 * 60 * 60);
+
+        if (diffInHours < 24) {
+            e.preventDefault();
+            alert("Appointments must be scheduled at least 24 hours in advance.");
+        }
+    });
+});
 </script>
 @endpush
-@endsection 
+@endsection

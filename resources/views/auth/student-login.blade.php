@@ -48,7 +48,6 @@
                 <h2 class="text-3xl font-bold text-gray-800">Student Login</h2>
             </div>
 
-   
             @if ($errors->any())
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                 @foreach ($errors->all() as $error)
@@ -62,20 +61,20 @@
 
             <div class="mb-4">
                 <label for="matric_id" class="block text-gray-700 font-medium mb-2">Matric ID</label>
-                <input type="text" 
-                       name="matric_id" 
-                       id="matric_id" 
+                <input type="text"
+                       name="matric_id"
+                       id="matric_id"
                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-900 placeholder-gray-400"
-                       value="{{ old('matric_id') }}" 
-                       required 
+                       value="{{ old('matric_id') }}"
+                       required
                        autofocus>
             </div>
 
             <div class="mb-6">
                 <label for="password" class="block text-gray-700">Password</label>
-                <input type="password" 
-                       name="password" 
-                       id="password" 
+                <input type="password"
+                       name="password"
+                       id="password"
                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-900 placeholder-gray-400"
                        required>
             </div>
@@ -86,8 +85,12 @@
         </form>
 
         <div class="mt-6 text-center">
+            <a href="{{ route('forgot.password.form') }}" class="text-blue-600 hover:text-blue-800">Forgot Password?</a>
+        </div>
+
+        <div class="mt-6 text-center">
             <a href="/" class="text-blue-600 hover:text-blue-800">Back to Home</a>
         </div>
     </div>
 </body>
-</html> 
+</html>

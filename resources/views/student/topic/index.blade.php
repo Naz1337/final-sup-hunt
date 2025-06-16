@@ -43,7 +43,7 @@
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold">My Topics</h2>
             @if(!$existingTopic)
-                <button onclick="showAddTopicModal()" 
+                <button onclick="showAddTopicModal()"
                         class="bg-gradient-to-br from-[#C8D9E6] to-[#C8D9E6] hover:from-[#A6B9C6] hover:to-[#A6B9C6] text-gray-700 px-4 py-2 rounded-lg flex items-center transition">
                     <i class="fas fa-plus mr-2"></i>
                     Add New Topic
@@ -91,7 +91,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
                                 @if($topic->status === 'pending') bg-yellow-100 text-yellow-800
                                 @elseif($topic->status === 'approved') bg-green-100 text-green-800
                                 @elseif($topic->status === 'rejected') bg-red-100 text-red-800
@@ -102,8 +102,8 @@
                         <td class="px-6 py-4 text-sm font-medium">
                             <div class="flex space-x-2">
                                 @if($topic->status === 'pending')
-                                    <form action="{{ route('student.topic.destroy', $topic->id) }}" 
-                                          method="POST" 
+                                    <form action="{{ route('student.topic.destroy', $topic->id) }}"
+                                          method="POST"
                                           onsubmit="return confirm('Are you sure you want to withdraw this topic?');"
                                           class="inline">
                                         @csrf
@@ -114,7 +114,7 @@
                                     </form>
                                 @endif
                                 @if($topic->feedback)
-                                    <button onclick="viewFeedback('{{ addslashes($topic->feedback) }}')" 
+                                    <button onclick="viewFeedback('{{ addslashes($topic->feedback) }}')"
                                             class="text-gray-600 hover:text-gray-900">
                                         <i class="fas fa-comment-alt mr-1"></i> Feedback
                                     </button>
@@ -137,13 +137,13 @@
     <!-- Lecturer Topics Section -->
     <div class="mb-8">
         <h2 class="text-2xl font-bold mb-6">Available Supervisor Topics</h2>
-        
+
         <!-- Search Bar -->
         <div class="mb-4">
             <div class="relative">
-                <input type="text" 
-                       id="supervisorSearch" 
-                       placeholder="Search by supervisor name..." 
+                <input type="text"
+                       id="supervisorSearch"
+                       placeholder="Search by supervisor name..."
                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3">
                     <i class="fas fa-search text-gray-400"></i>
@@ -206,7 +206,7 @@
                                     <form action="{{ route('student.topic.apply', $topic->id) }}" method="POST"
                                           onsubmit="return confirm('Are you sure you want to apply for this topic? You can only have one topic at a time.');">
                                         @csrf
-                                        <button type="submit" 
+                                        <button type="submit"
                                                 class="text-blue-600 hover:text-blue-900 flex items-center">
                                             <i class="fas fa-hand-pointer mr-1"></i> Apply
                                         </button>
@@ -249,19 +249,16 @@
                             <input type="text" name="title" required
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
                         </div>
-                        
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Description</label>
                             <textarea name="description" required rows="4"
                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200"></textarea>
                         </div>
-                        
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Research Area</label>
                             <input type="text" name="research_area" required
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200">
                         </div>
-                        
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Supervisor</label>
                             <select name="lecturer_id" required
@@ -343,7 +340,6 @@ window.onclick = function(event) {
 document.getElementById('supervisorSearch').addEventListener('keyup', function() {
     const searchValue = this.value.toLowerCase();
     const rows = document.querySelectorAll('.supervisor-row');
-    
     rows.forEach(row => {
         const supervisorName = row.querySelector('.supervisor-name').textContent.toLowerCase();
         if (supervisorName.includes(searchValue)) {
@@ -355,4 +351,4 @@ document.getElementById('supervisorSearch').addEventListener('keyup', function()
 });
 </script>
 @endpush
-@endsection 
+@endsection
