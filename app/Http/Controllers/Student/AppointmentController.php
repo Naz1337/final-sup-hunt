@@ -8,6 +8,7 @@ use App\Models\Lecturer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -51,6 +52,24 @@ class AppointmentController extends Controller
                 'location' => $request->location,
                 'status' => 'pending'
             ]);
+        // Combine date and time
+        $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->date . ' ' . $request->time);
+
+        // Ensure appointment is at least 24 hours in advance
+        if (now()->diffInMinutes($appointmentDateTime, false) < 1440) {
+            return back()->with('error', 'You must apply for an appointment at least 24 hours before the selected time.');
+        }
+
+        $appointment = Appointment::create([
+            'student_id' => Auth::guard('student')->id(),
+            'lecturer_id' => $request->lecturer_id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'date' => $request->date,
+            'time' => $request->time,
+            'location' => $request->location,
+            'status' => 'pending'
+        ]);
 
             return back()->with('success', 'Appointment requested successfully.');
         } catch (\Exception $e) {
@@ -86,6 +105,15 @@ class AppointmentController extends Controller
                 'time',
                 'location'
             ]));
+        // Combine date and time
+        $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->date . ' ' . $request->time);
+
+        // Ensure updated appointment is still at least 24 hours in advance
+        if (now()->diffInMinutes($appointmentDateTime, false) < 1440) {
+            return back()->with('error', 'You must schedule the appointment at least 24 hours in advance.');
+        }
+
+        $appointment->update($request->all());
 
             return back()->with('success', 'Appointment updated successfully.');
         } catch (\Exception $e) {
@@ -141,4 +169,4 @@ class AppointmentController extends Controller
             return back()->with('error', 'Failed to book appointment slot.');
         }
     }
-} 
+}

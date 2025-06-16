@@ -86,6 +86,10 @@
         </form>
 
         <div class="mt-6 text-center">
+            <a href="{{ route('forgot.password.form') }}" class="text-blue-600 hover:text-blue-800">Forgot Password?</a>
+        </div>
+
+        <div class="mt-6 text-center">
             <a href="/" class="text-blue-600 hover:text-blue-800">Back to Home</a>
         </div>
     </div>
