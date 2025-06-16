@@ -166,21 +166,21 @@
                 <div>
                     <label for="edit_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input type="text" id="edit_name" name="name"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Email -->
                 <div>
                     <label for="edit_email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <input type="email" id="edit_email" name="email"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Research Group -->
                 <div>
                     <label for="edit_research_group" class="block text-sm font-medium text-gray-700 mb-1">Research Group</label>
                     <select id="edit_research_group" name="research_group"
-                            class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         @foreach(['CSRG', 'VISIC', 'MIRG', 'Cy-SIG', 'SERG', 'KECL', 'DSSim', 'DBIS', 'EDU-TECH', 'ISP', 'CNRG', 'SCORE'] as $group)
                             <option value="{{ $group }}">{{ $group }}</option>
                         @endforeach
@@ -265,7 +265,7 @@ function editLecturer(id) {
             document.getElementById('edit_email').value = lecturer.email;
             document.getElementById('edit_research_group').value = lecturer.research_group;
 
-            document.getElementById('editForm').action = `{{-- route('coordinator.lecturers.update', '') --}}/${lecturer.id}`;
+            document.getElementById('editForm').action = `{{ route('coordinator.lecturers.update', '') }}/${lecturer.id}`;
             document.getElementById('editModal').classList.remove('hidden');
         })
         .catch(error => {

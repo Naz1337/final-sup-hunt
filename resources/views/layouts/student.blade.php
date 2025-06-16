@@ -24,19 +24,19 @@
                     <span class="ml-2 text-xl font-semibold">Student Dashboard</span>
                 </div>
                 <div class="flex items-center space-x-8">
-                    <a href="{{ route('student.dashboard') }}"
+                    <a href="{{ route('student.dashboard') }}" 
                        class="nav-link {{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
                         Dashboard
                     </a>
-                    <a href="{{ route('student.topic.index') }}"
+                    <a href="{{ route('student.topic.index') }}" 
                        class="nav-link {{ request()->routeIs('student.topic.*') ? 'active' : '' }}">
                         Topic
                     </a>
-                    <a href="{{ route('student.appointment.index') }}"
+                    <a href="{{ route('student.appointment.index') }}" 
                        class="nav-link {{ request()->routeIs('student.appointment.*') ? 'active' : '' }}">
                         Appointment
                     </a>
-                    <a href="{{ route('student.profile.index') }}"
+                    <a href="{{ route('student.profile.index') }}" 
                        class="nav-link {{ request()->routeIs('student.profile.*') ? 'active' : '' }}">
                         Profile
                     </a>
@@ -56,6 +56,6 @@
         @yield('content')
     </main>
 
-    @stack('scripts')
+    @yield('scripts')
 </body>
-</html>
+</html> 

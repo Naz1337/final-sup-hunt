@@ -45,53 +45,43 @@
         <div class="login-card w-full max-w-md p-8">
             <div class="text-center mb-8">
                 <img src="{{ asset('images/innovisory.png') }}" alt="Innovisory Logo" class="h-20 mx-auto mb-4">
-                <h2 class="text-3xl font-bold text-gray-800">Student Login</h2>
+                <h2 class="text-3xl font-bold text-gray-800">Forgot Password</h2>
             </div>
 
-
-            @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
-            </div>
+            @if(session('success'))
+                <div class="bg-green-100 text-green-800 p-2 mt-4 rounded">
+                    {{ session('success') }}
+                </div>
             @endif
 
-        <form method="POST" action="{{ route('student.login') }}" class="space-y-6">
+            @if($errors->any())
+                <div class="bg-red-100 text-red-800 p-2 mt-4 rounded">
+                    <ul class="list-disc pl-5">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+        <form method="POST" action="{{ route('forgot.password.send') }}" class="space-y-6">
             @csrf
 
             <div class="mb-4">
-                <label for="matric_id" class="block text-gray-700 font-medium mb-2">Matric ID</label>
-                <input type="text"
-                       name="matric_id"
-                       id="matric_id"
+                <label for="matric_id" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                <input id="email" name="email" type="email" required
                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-900 placeholder-gray-400"
-                       value="{{ old('matric_id') }}"
-                       required
-                       autofocus>
-            </div>
-
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700">Password</label>
-                <input type="password"
-                       name="password"
-                       id="password"
-                       class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-gray-900 placeholder-gray-400"
-                       required>
+                       placeholder="Enter your email address">
             </div>
 
             <button type="submit" class="login-btn w-full text-white py-3 px-6 rounded-lg font-medium">
-                Login
+                Send Temporary Password
             </button>
         </form>
-
-        <div class="mt-6 text-center">
-            <a href="{{ route('forgot.password.form') }}" class="text-blue-600 hover:text-blue-800">Forgot Password?</a>
-        </div>
 
         <div class="mt-6 text-center">
             <a href="/" class="text-blue-600 hover:text-blue-800">Back to Home</a>
         </div>
     </div>
 </body>
-</html>
+</html> 

@@ -138,14 +138,14 @@
                 <div>
                     <label for="edit_name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input type="text" id="edit_name" name="name"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Email -->
                 <div>
                     <label for="edit_email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <input type="email" id="edit_email" name="email"
-                           class="w-full px-3 py-2 border rounded-lg focus:outline-hidden focus:ring-2 focus:ring-blue-500">
+                           class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
                 <!-- Program (Read-only) -->
@@ -232,7 +232,7 @@ function editStudent(id) {
             document.getElementById('edit_program').value = student.program;
 
             // Set the form action URL with the correct route
-            document.getElementById('editForm').action = `{{-- route('coordinator.students.update', '') --}}/${student.id}`;
+            document.getElementById('editForm').action = `{{ route('coordinator.students.update', '') }}/${student.id}`;
 
             // Show the modal
             document.getElementById('editModal').classList.remove('hidden');
