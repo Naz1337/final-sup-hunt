@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Lecturer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -32,6 +33,14 @@ class AppointmentController extends Controller
             'lecturer_id' => 'required|exists:lecturers,id',
             'location' => 'required|string|max:255'
         ]);
+
+        // Combine date and time
+        $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->date . ' ' . $request->time);
+
+        // Ensure appointment is at least 24 hours in advance
+        if (now()->diffInMinutes($appointmentDateTime, false) < 1440) {
+            return back()->with('error', 'You must apply for an appointment at least 24 hours before the selected time.');
+        }
 
         $appointment = Appointment::create([
             'student_id' => Auth::guard('student')->id(),
@@ -62,6 +71,14 @@ class AppointmentController extends Controller
             'location' => 'required|string|max:255'
         ]);
 
+        // Combine date and time
+        $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->date . ' ' . $request->time);
+
+        // Ensure updated appointment is still at least 24 hours in advance
+        if (now()->diffInMinutes($appointmentDateTime, false) < 1440) {
+            return back()->with('error', 'You must schedule the appointment at least 24 hours in advance.');
+        }
+
         $appointment->update($request->all());
 
         return back()->with('success', 'Appointment updated successfully.');
@@ -76,4 +93,4 @@ class AppointmentController extends Controller
         $appointment->delete();
         return back()->with('success', 'Appointment cancelled successfully.');
     }
-} 
+}

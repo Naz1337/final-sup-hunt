@@ -15,6 +15,8 @@ use App\Http\Controllers\Lecturer\DashboardController;
 use App\Http\Controllers\Lecturer\LecturerTopicController;
 use App\Http\Controllers\Lecturer\LecturerAppointmentController;
 use App\Http\Controllers\Lecturer\LecturerProfileController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Student\LecturerProfileController as StudentLecturerProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -97,6 +99,10 @@ Route::get('/lecturer/change-password', [LecturerAuthController::class, 'showCha
 Route::post('/lecturer/change-password', [LecturerAuthController::class, 'changePassword'])
     ->middleware('auth:lecturer');
 
+//Forgot Password Form Routes
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm'])->name('forgot.password.form');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendTemporaryPassword'])->name('forgot.password.send');
+
 // Student Routes
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/student/dashboard', [StudentAuthController::class, 'dashboard'])->name('student.dashboard');
@@ -117,6 +123,10 @@ Route::middleware(['auth:student'])->group(function () {
     // Profile Routes
     Route::get('/student/profile', [ProfileController::class, 'index'])->name('student.profile.index');
     Route::put('/student/profile', [ProfileController::class, 'update'])->name('student.profile.update');
+
+    // Lecturer Profile Routes
+    Route::get('/student/lecturers', [StudentLecturerProfileController::class, 'index'])->name('student.lecturer.list');
+    Route::get('/student/lecturers/{lecturer}', [StudentLecturerProfileController::class, 'show'])->name('student.lecturer.profile');
 });
 
 // Lecturer Routes
